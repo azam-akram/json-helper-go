@@ -5,29 +5,29 @@ import (
 	"errors"
 )
 
-var handler Helper
+var helper Helper
 
-type JsonHandler struct {
+type JsonHelper struct {
 	logger Logger
 }
 
 func NewJsonHelper() Helper {
-	if handler == nil {
-		handler = &JsonHandler{
+	if helper == nil {
+		helper = &JsonHelper{
 			logger: GetLogger(),
 		}
 	}
-	return handler
+	return helper
 }
 
-func (jh JsonHandler) GetLogger() Logger {
+func (jh JsonHelper) GetLogger() Logger {
 	if jh.logger == nil {
 		jh.logger = GetLogger()
 	}
 	return jh.logger
 }
 
-func (jh JsonHandler) StringToStruct(s string, i interface{}) error {
+func (jh JsonHelper) StringToStruct(s string, i interface{}) error {
 	err := json.Unmarshal([]byte(s), i)
 	if err != nil {
 		return err
@@ -36,7 +36,7 @@ func (jh JsonHandler) StringToStruct(s string, i interface{}) error {
 	return nil
 }
 
-func (jh JsonHandler) StructToString(i interface{}) (string, error) {
+func (jh JsonHelper) StructToString(i interface{}) (string, error) {
 	jsonBytes, err := json.Marshal(i)
 	if err != nil {
 		return "", err
@@ -45,7 +45,7 @@ func (jh JsonHandler) StructToString(i interface{}) (string, error) {
 	return string(jsonBytes), nil
 }
 
-func (jh JsonHandler) StringToMap(s string) (map[string]interface{}, error) {
+func (jh JsonHelper) StringToMap(s string) (map[string]interface{}, error) {
 	var m map[string]interface{}
 	err := json.Unmarshal([]byte(s), &m)
 	if err != nil {
@@ -55,7 +55,7 @@ func (jh JsonHandler) StringToMap(s string) (map[string]interface{}, error) {
 	return m, nil
 }
 
-func (jh JsonHandler) MapToString(m map[string]interface{}) (string, error) {
+func (jh JsonHelper) MapToString(m map[string]interface{}) (string, error) {
 	jsonBytes, err := json.Marshal(m)
 	if err != nil {
 		return "", err
@@ -64,15 +64,15 @@ func (jh JsonHandler) MapToString(m map[string]interface{}) (string, error) {
 	return string(jsonBytes), nil
 }
 
-func (jh JsonHandler) BytesToString(jsonBytes []byte) string {
+func (jh JsonHelper) BytesToString(jsonBytes []byte) string {
 	return string(jsonBytes)
 }
 
-func (jh JsonHandler) StringToBytes(s string) []byte {
+func (jh JsonHelper) StringToBytes(s string) []byte {
 	return []byte(s)
 }
 
-func (jh JsonHandler) StructToBytes(i interface{}) (jsonBytes []byte, err error) {
+func (jh JsonHelper) StructToBytes(i interface{}) (jsonBytes []byte, err error) {
 	jsonBytes, err = json.Marshal(i)
 	if err != nil {
 		return nil, err
@@ -81,7 +81,7 @@ func (jh JsonHandler) StructToBytes(i interface{}) (jsonBytes []byte, err error)
 	return jsonBytes, nil
 }
 
-func (jh JsonHandler) BytesToStruct(b []byte, d interface{}) error {
+func (jh JsonHelper) BytesToStruct(b []byte, d interface{}) error {
 	err := json.Unmarshal([]byte(b), &d)
 	if err != nil {
 		return err
@@ -90,7 +90,7 @@ func (jh JsonHandler) BytesToStruct(b []byte, d interface{}) error {
 	return nil
 }
 
-func (jh JsonHandler) ModifyInputJson(s string) (map[string]interface{}, error) {
+func (jh JsonHelper) ModifyInputJson(s string) (map[string]interface{}, error) {
 	var mapToProcess = make(map[string]interface{})
 	if err := json.Unmarshal([]byte(s), &mapToProcess); err != nil {
 		return nil, errors.New("cannot convert string to map")
